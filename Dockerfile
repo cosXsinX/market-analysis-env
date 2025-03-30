@@ -31,9 +31,12 @@ RUN code-server --install-extension github.vscode-pull-request-github
 # Create config directory (still as root, but we'll fix permissions)
 # As root
 RUN mkdir -p /home/jovyan/.config/code-server && \
-    printf "bind-addr: 0.0.0.0:8080\nauth: password\npassword: market\n\ncert: false\n" \
+    printf "bind-addr: 0.0.0.0:8080\nauth: password\npassword: maximax\n\ncert: false\n" \
     > /home/jovyan/.config/code-server/config.yaml && \
     chown -R jovyan:users /home/jovyan/.config
+
+# Create volume workspace directory
+RUN mkdir -p /workspace && chown jovyan:users /workspace
 	
 # Fix log dir permissions
 RUN mkdir -p /home/jovyan/.local/share/code-server && \
@@ -49,4 +52,4 @@ USER jovyan
 
 # Start code-server & jupyter notebook
 CMD bash -c "jupyter notebook --ip=0.0.0.0 --port=8888 --NotebookApp.token='' --NotebookApp.password='' & \
-             code-server --config /home/jovyan/.config/code-server/config.yaml"
+             code-server /workspace --config /home/jovyan/.config/code-server/config.yaml"
