@@ -42,6 +42,9 @@ RUN mkdir -p /workspace && chown jovyan:users /workspace
 RUN mkdir -p /home/jovyan/.local/share/code-server && \
     chown -R jovyan:users /home/jovyan/.local
 
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
 # Expose code-server port
 EXPOSE 8080
 
